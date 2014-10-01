@@ -1,0 +1,23 @@
+{
+  "name": "chat-simple",
+  "version": "0.0.1",
+  "description": "The simple chat app with socket.io 1.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-Personal:NgaNguyenDuy/chat-simple"
+  },
+  "keywords": [
+    "chat",
+    "socket.io"
+  ],
+  "author": "NgaNguyenDuy",
+  "license": "MIT",
+  "dependencies": {
+    "debug": "^2.0.0",
+    "socket.io": "^1.1.0"
+  }
+}
