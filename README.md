@@ -1,2 +1,2 @@
-Simple Server Chat with Node.js and Socket.IO
+Simple Server Chat with Socket.IO
 ===
