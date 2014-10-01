@@ -21,6 +21,49 @@ var app = http.createServer(function(req, res) {
 
 /*************** Socket IO config  */
 
-// var io = require('socket.io').listen(app),
-//     crypto = require('crypto');
+var io = require('socket.io').listen(app),
+    crypto = require('crypto'),
+    users = [];
+
+io.on('connection', function(socket) {
+    var id = crypto.randomBytes(20).toString('hex');
+    
+    users.push({socket: socket, id: id, name: null});
+    
+    socket.emit('welcome', {message : 'welcome', id: id});
+    
+    sendUsers();
+    
+    socket.on('send', function(data) {
+        if(data.username !== '') {
+            setUsername(id, data.username);
+        };
+        
+        if(data.toUser !== '') {
+            users.forEach(function(user) {
+                if(user.id === data.toUser || user.id === data.fromUser) {
+                    user.socket.emit('receive', data);
+                }
+            });
+        } else {
+            io.sockets.emit('receive', data);
+        }
+    });
+});
+
+
+var sendUsers = function() {
+    io.sockets.emit('users', users.map(function(user) {
+		return { id: user.id, name: user.username };
+	}));
+};
+
+var setUsername = function(id, name) {
+    users.forEach(function(user) {
+		if(user.id === id) {
+			user.username = name;
+			sendUsers();
+		}
+	});
+};
 
