@@ -35,6 +35,7 @@
 			window.onload = function() {
 				var Chat = (function() {
 
+                    // Connect to socket.io.
 					var socket = io.connect('http://localhost:8008'),
 						chat = document.querySelector("#chat"),
 						input = document.querySelector("#input"),
@@ -46,7 +47,7 @@
 
 					// chat
 					var send = function(message) {
-						var username = name.value == '' ? '' : '<strong>' + name.value + ': </strong>';
+						var username = name.value == '' ? '<strong style="color: black;">Anonymous: </strong>' : '<strong>' + name.value + ': </strong>';
 						socket.emit('send', { 
 							message: '<span style="color:' + color + '">' + username + message + '</span>',
 							username: name.value,
@@ -54,6 +55,8 @@
 							fromUser: id
 						});
 					}
+            
+                    // Downward message.
 					var display = function(message) {
 						chat.innerHTML = chat.innerHTML + message + '<br />';
 						chat.scrollTop = chat.scrollHeight;
@@ -83,7 +86,7 @@
 						for(var i=0; i<data.length; i++) {
 							var user = data[i];
 							if(id != user.id) {
-								var username = user.name ? user.name : 'user' + (i+1);
+								var username = user.name ? user.name : 'Anonymous ' + (i+1);
 								var selected = user.id === selectedUser ? ' selected="selected"': '';
 								html += '<option value="' + user.id + '"' + selected + '>' + username + '</option>';
 							}
